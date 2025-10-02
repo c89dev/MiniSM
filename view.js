@@ -43,32 +43,32 @@ function welcomePageView() {
 
 function feedPageView() {
     currentPage = Pages.feedPage;
-    let users = usersRegistered;
-    let html = '';
+    let filteredUsers;
     let navHtml = `<button onclick="feedFilter(true)">FOLLOWING</button>
-                    <button onclick="feedFilter(false)">ALL</button>`
-    if (sortByFollowing) {
-        for (let i = 0; i < usersRegistered.length; i++) {
-            if (usersRegistered[i].youFollow) {
-                html += `
-            <div>${usersRegistered[i].name}</div>
-        `
+                    <button onclick="feedFilter(false)">ALL</button>
+                    <button onclick="">🏚️</button>`
+    if (sortByFollowing){
+        filteredUsers = [];
+        for (let i = 0; i < usersRegistered.length; i++){
+            if (usersRegistered[i].youFollow){
+                filteredUsers.push(usersRegistered[i]);
             }
         }
     }
-    if (!sortByFollowing) {
-        for (let i = 0; i < usersRegistered.length; i++) {
-
-            html += `
-        <div>${usersRegistered[i].name}</div>
-    `
-        }
+    else {
+        filteredUsers = usersRegistered.slice();
     }
+    
+    html = '';
+    for (let i = 0; i < filteredUsers.length; i++){
+        html += userDisplayCmp(filteredUsers[i]);
+    }
+
     app.innerHTML = navHtml + html;
 }
 
 
 
 function userDisplayCmp(user) {
-
+    return `<div><button>😐</button>${user.name}</div>`
 }
