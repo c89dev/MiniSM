@@ -46,7 +46,7 @@ function feedPageView() {
     let filteredUsers;
     let navHtml = `<button onclick="feedFilter(true)">FOLLOWING</button>
                     <button onclick="feedFilter(false)">ALL</button>
-                    <button onclick="">🏚️</button>`
+                    <button onclick="registrationPageView()">🏚️</button>`
     if (sortByFollowing){
         filteredUsers = [];
         for (let i = 0; i < usersRegistered.length; i++){
@@ -64,11 +64,15 @@ function feedPageView() {
         html += userDisplayCmp(filteredUsers[i]);
     }
 
-    app.innerHTML = navHtml + html;
+    app.innerHTML = html;
+    navBar.innerHTML = navHtml;
 }
 
 
 
 function userDisplayCmp(user) {
-    return `<div><button>😐</button>${user.name}</div>`
+    return `<div>
+    <img class="smallAvatar" src="${user.pfp}"</img>
+       ${user.name}
+       </div>`
 }
