@@ -1,4 +1,6 @@
 updateView();
+header.innerHTML = headerView();
+
 function updateView() {
     if (currentPage == Pages.welcomePage) {
         welcomePageView();
@@ -19,15 +21,13 @@ function registrationPageView() {
         <input placeholder="Name" type="text"> <br>
         <input placeholder="Age" type="text"> <br>
         <input placeholder="Profile Picture" type="text"> <br>
-        <button onclick="feedPageView()">BROWSE FEED</button>
+        <button onclick="feedPageView()">BROWSE PEOPLE</button>
     </div>
     `
-    app.innerHTML = html;
+
+    content.innerHTML = html;
 }
 
-function profilePageView(name) {
-
-}
 
 function welcomePageView() {
     currentPage = Pages.welcomePage;
@@ -38,19 +38,18 @@ function welcomePageView() {
     </div>
 
     `;
-    app.innerHTML = html;
+    content.innerHTML = html;
 }
 
 function feedPageView() {
     currentPage = Pages.feedPage;
-    let filteredUsers;
-    let navHtml = `<button onclick="feedFilter(true)">FOLLOWING</button>
-                    <button onclick="feedFilter(false)">ALL</button>
-                    <button onclick="registrationPageView()">🏚️</button>`
-    if (sortByFollowing){
+
+    let sortHtml = `<div><button onclick="feedFilter(true)">FOLLOWING</button>
+                    <button onclick="feedFilter(false)">ALL</button></div>`
+    if (sortByFollowing) {
         filteredUsers = [];
-        for (let i = 0; i < usersRegistered.length; i++){
-            if (usersRegistered[i].youFollow){
+        for (let i = 0; i < usersRegistered.length; i++) {
+            if (usersRegistered[i].youFollow) {
                 filteredUsers.push(usersRegistered[i]);
             }
         }
@@ -58,21 +57,41 @@ function feedPageView() {
     else {
         filteredUsers = usersRegistered.slice();
     }
-    
-    html = '';
-    for (let i = 0; i < filteredUsers.length; i++){
-        html += userDisplayCmp(filteredUsers[i]);
+
+    feedHtml = '';
+    for (let i = 0; i < filteredUsers.length; i++) {
+        feedHtml += displayUserList(filteredUsers[i], filteredUsers[i].id);
     }
 
-    app.innerHTML = html;
-    navBar.innerHTML = navHtml;
+    content.innerHTML = sortHtml + feedHtml;
+}
+
+function profilePageView(userId) {
+    currentViewUser = usersRegistered.find(u => u.id === userId);
+    let followState = checkFollow(currentViewUser);
+    let profileHtml = `
+    <div class="userProfile">User Profile
+        <div><img src="${currentViewUser.pfp}" class="medAvatar"></div>
+        <div><button id="followBtn" onclick="toggleFollow(${currentViewUser.youFollow})">${followState}</button>
+        <div>${currentViewUser.name}</div>
+        <div>Age: ${currentViewUser.age}</div>
+    </div>
+    `
+    content.innerHTML = profileHtml;
 }
 
 
-
-function userDisplayCmp(user) {
+function displayUserList(userObj, userId) {
     return `<div>
-    <img class="smallAvatar" src="${user.pfp}"</img>
-       ${user.name}
-       </div>`
+    <img onclick="profilePageView('${userId}')" 
+    class="smallAvatar" 
+    src="${userObj.pfp}"> 
+    ${userObj.name}
+    </div>`
 }
+
+function headerView() {
+    return headerHtml = `StalkBook <button onclick="registrationPageView()">🏚️</button>`
+}
+
+

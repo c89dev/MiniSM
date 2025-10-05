@@ -1,0 +1,39 @@
+body{
+    background-color: rgb(53, 54, 57);
+    display: grid;
+    gap: 5%;
+}
+#header{
+    background-image: linear-gradient(rgb(55, 56, 59), rgb(0, 0, 0));
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+    font-weight: bold;
+    padding-bottom: 2%;
+}
+#content{
+    display: grid;
+    gap: 2%;
+}
+button{
+    background-color: black;
+    color: white;
+    border-radius: 5%;
+}
+.smallAvatar{
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: auto;
+}
+.medAvatar{
+    cursor: pointer;
+    width: 150px;
+    height: auto;
+}
+.userProfile{
+    padding: 5%;
+    background-image: linear-gradient(rgb(57, 57, 57), white);
+}
+footer{
+    padding-top: 70%;
+}
