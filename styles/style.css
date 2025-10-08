@@ -1,39 +1,83 @@
 body{
-    background-color: rgb(53, 54, 57);
-    display: grid;
-    gap: 5%;
+    background-color: rgb(131, 131, 131);
+    font-family: Arial, Helvetica, sans-serif;
 }
-#header{
+button, input, select {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+}
+p{
+    background-color: rgba(255, 255, 255, 0.135);
+}
+button{
+    background-color: black;
+    color: white;
+}
+/* select{
+    color: white;
+    background-color: black;
+} */
+#content{
+    font-size: 18px;
+    
+}
+.Form{
+    padding-left: 25%;
+    padding-right: 25%;
+    display: grid;
+    background-color: rgba(255, 255, 255, 0.298);
+}
+.invisible{
+    display: none !important;
+}
+.author-wrapper {
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: antiquewhite;
+    border: 2px solid grey;
+    width: 40%;
+              
+}
+.feedArticle{
+    padding-left: 10%;
+    border: 2px solid rgb(122, 122, 122);
+    background-color: aliceblue;
+}
+.createPage img{
+    width: 264px;
+    height: auto;
+    display: grid;
+}
+.header{
     background-image: linear-gradient(rgb(55, 56, 59), rgb(0, 0, 0));
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
     font-weight: bold;
     padding-bottom: 2%;
-}
-#content{
-    display: grid;
-    gap: 2%;
-}
-button{
-    background-color: black;
-    color: white;
-    border-radius: 5%;
+    padding-left: 2%;
+    padding-top: 2%;
 }
 .smallAvatar{
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
+    object-fit: cover;
     cursor: pointer;
-    width: 25px;
-    height: auto;
 }
 .medAvatar{
     cursor: pointer;
-    width: 150px;
+    width: 250px;
     height: auto;
 }
 .userProfile{
     padding: 5%;
-    background-image: linear-gradient(rgb(57, 57, 57), white);
+    background-image: linear-gradient(rgb(174, 174, 174), rgb(161, 161, 161));
 }
 footer{
-    padding-top: 70%;
+    display: grid;
+    align-self: center;
+    padding-left: 35%;
+    padding-top: 10%;
 }
