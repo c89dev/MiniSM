@@ -23,49 +23,26 @@ function userLogIn() {
         if (mailInput == usersRegistered[i].mail && pwInput == usersRegistered[i].pw) {
             headerMain.myProf.textContent = "Logged in as " + usersRegistered[i].name;
             console.log("Success");
-            loggedInAsId = usersRegistered[i].id;
+            loggedInUser = usersRegistered[i];
             currentPage = Pages.feedPage;
             isLoggedIn = true;
-            setTimeout(updateView, 2200);
+            feedPageDraw();
+            userUIDraw();
+            setTimeout(updateView, 300);
         }
         else (console.log("Fail"))
     }
 }
 
-// Follow/unfollow user
-function toggleFollow() {
-    currentViewUser.youFollow = !currentViewUser.youFollow;
-    document.getElementById("followBtn").textContent =
-        currentViewUser.youFollow ? "Unfollow" : "Follow";
-}
-
-// Sort feed by following/all
-function feedFilter(selected) {
-    if (selected == 'Following') { sortByFollowing = true; }
-    else if (selected == 'All') { sortByFollowing = false; }
+function userLogOut(){
+    loggedInUser = null;
+    isLoggedIn = null;
+    headerMain.UI.innerHTML = '';
     feedPage.post.innerHTML = '';
-    if (sortByFollowing) {
-        filteredUsers = [];
-        for (let i = 0; i < usersRegistered.length; i++) {
-            if (usersRegistered[i].youFollow) {
-                filteredUsers.push(usersRegistered[i]);
-            }
-        }
-    }
-    else {
-        filteredUsers = usersRegistered.slice();
-    }
-    for (let i = 0; i < filteredUsers.length; i++) {
-        let authorNode = authorConstruct(filteredUsers[i], filteredUsers[i].id);
-        feedPage.post.appendChild(authorNode);
-
-    }
-
-}
-
-function checkFollow(user) {
-    if (user.youFollow) { return 'Unfollow'; }
-    else if (!user.youFollow) { return 'Follow'; }
+    
+    
+    currentPage = Pages.logInPage;
+    updateView();
 }
 
 function goToReg() {
@@ -74,10 +51,34 @@ function goToReg() {
     updateView();
 }
 
-function follow(userObj){
-    console.log("eh");
-    
+function follow(userObj) {
+    loggedInUser.subs.push(userObj);
+
 }
+
+function goToCreate() {
+    if (isLoggedIn == true) {
+        console.log("Is logged in, goToCreate")
+        currentPage = Pages.createPage;
+        updateView();
+    }
+    else if (isLoggedIn == false) {
+        console.log("Is not logged in")
+        return;
+    }
+}
+
+function clickTitle() {
+    if (isLoggedIn == true) {
+        currentPage = Pages.feedPage;
+        updateView();
+    }
+    else if (isLoggedIn == false) {
+        return;
+    }
+}
+
+
 
 
 // function editPfp(){

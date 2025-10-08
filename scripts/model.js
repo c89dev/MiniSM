@@ -1,9 +1,8 @@
 const header = document.getElementById("header");
 const content = document.getElementById("content");
 let isLoggedIn = false;
-let loggedInAsId;
+let loggedInUser;
 let userIdCount = 6;
-let sortByFollowing = true;
 let filteredUsers = [];
 
 
@@ -52,9 +51,8 @@ let userTemplate = {
     name: '',
     age: null,
     pfp: "media/image/default_avatar.png",
-    youFollow: false,
     subs: [],
-    history: {}
+    youFollow: false,
 }
 
 let profileTemplate = {
@@ -111,6 +109,7 @@ let usersRegistered = [
         name: 'Steezus Christ',
         age: 34,
         pfp: "media/image/steezus_avatar.png",
+        subs: [],
         youFollow: false,
     },
     {
@@ -120,6 +119,7 @@ let usersRegistered = [
         name: 'Otto Von Vittu',
         age: 87,
         pfp: "media/image/otto_avatar.png",
+        subs: [],
         youFollow: false,
     },
     {
@@ -129,6 +129,7 @@ let usersRegistered = [
         name: 'Martha Lindgren',
         age: 25,
         pfp: "media/image/cat_avatar.png",
+        subs: [],
         youFollow: false,
     },
     {
@@ -138,6 +139,7 @@ let usersRegistered = [
         name: 'Bill Myers',
         age: 63,
         pfp: "media/image/default_avatar.png",
+        subs: [],
         youFollow: false,
     },
     {
@@ -147,6 +149,7 @@ let usersRegistered = [
         name: 'Cassandra Vargas',
         age: 21,
         pfp: "media/image/cass_avatar.png",
+        subs: [],
         youFollow: true,
     },
     {

@@ -95,12 +95,15 @@ function logInFormConstruct() {
     let mailLabel = document.createElement("label");
     mailLabel.textContent = "E-mail";
     form.mail = document.createElement("input");
-    form.mail.type = "Text";
+    form.mail.autocapitalize = "none";
+    form.mail.type.autocomplete = "email";
 
     let pwLabel = document.createElement("label");
     pwLabel.textContent = "Password";
     form.pw = document.createElement("input");
     form.pw.type = "password";
+    form.pw.type.autocapitalize = "none";
+
 
     form.loginBtn = document.createElement("button");
     form.loginBtn.textContent = "Log in";
@@ -142,15 +145,45 @@ function feedOption() {
     menu.select = document.createElement("select");
     menu.optionA = document.createElement("option");
     menu.optionB = document.createElement("option");
-    menu.optionA.textContent = 'Following';
-    menu.optionB.textContent = 'All';
+    menu.optionA.textContent = 'All';
+    menu.optionB.textContent = 'Following';
+    menu.optionA.value = 'All';
+    menu.optionB.value = 'Following';
 
     menu.select.append(menu.optionA, menu.optionB);
     menu.wrapper.append(menu.select);
 
-    menu.select.onchange = () => feedFilter(menu.select.value);
+    menu.select.addEventListener("change", toggleFeed);
 
     return menu.wrapper;
+}
+
+function toggleFeed(e) {
+    if (e.target.value == 'Following') {
+        console.log("Following ran");
+        filteredUsers.length = 0;
+        feedPage.post.innerHTML = '';
+        filteredUsers = loggedInUser.subs.slice();
+
+        for (let i = 0; i < filteredUsers.length; i++) {
+            let authorNode = authorConstruct(filteredUsers[i]);
+            feedPage.post.appendChild(authorNode);
+        }
+
+    }
+    else if (e.target.value == 'All') {
+        console.log("All ran");
+        filteredUsers.length = 0;
+        feedPage.post.innerHTML = '';
+        filteredUsers = usersRegistered.slice();
+
+        for (let i = 0; i < filteredUsers.length; i++) {
+            let authorNode = authorConstruct(filteredUsers[i]);
+            if (loggedInUser.id !== filteredUsers[i].id) {
+                feedPage.post.appendChild(authorNode);
+            }
+        }
+    }
 }
 
 function feedPageConstruct() {
@@ -161,32 +194,22 @@ function feedPageConstruct() {
     feed.createBtn = document.createElement("button");
     feed.createBtn.textContent = "Create Post";
     feed.wrapper.append(feed.filter, feed.post);
-
-    
-        feed.wrapper.append(feed.createBtn);
-    
-
-    if (sortByFollowing) {
-        filteredUsers = [];
-        for (let i = 0; i < usersRegistered.length; i++) {
-            if (usersRegistered[i].youFollow) {
-                filteredUsers.push(usersRegistered[i]);
-            }
-        }
-    }
-    else {
-        filteredUsers = usersRegistered.slice();
-    }
-    for (let i = 0; i < filteredUsers.length; i++) {
-        let authorNode = authorConstruct(filteredUsers[i]);
-        feed.post.appendChild(authorNode);
-    }
+    feed.wrapper.append(feed.createBtn);
 
     feed.createBtn.onclick = () => goToCreate();
 
-    
-
     return feed;
+}
+
+function feedPageDraw() {
+    filteredUsers = usersRegistered.slice();
+
+    for (let i = 0; i < filteredUsers.length; i++) {
+        let authorNode = authorConstruct(filteredUsers[i]);
+        if (loggedInUser.id !== filteredUsers[i].id) {
+            feedPage.post.appendChild(authorNode);
+        }
+    }
 }
 
 function authorConstruct(userObj) {
@@ -209,7 +232,7 @@ function authorConstruct(userObj) {
     return author.wrapper;
 }
 
-function createPageConstruct(){
+function createPageConstruct() {
     let create = {};
     create.wrapper = document.createElement("div");
     create.wrapper.textContent = "CREATE POST AND SUBMIT TO FEED";
@@ -224,7 +247,7 @@ function createPageConstruct(){
     return create;
 }
 
-function articleConstruct(){
+function articleConstruct() {
     let article = {};
     article.wrapper = document.createElement("div");
     article.media = document.createElement("img");
@@ -265,7 +288,7 @@ function profilePageConstruct(userObj, wrapper) {
         profile.age,
         profile.about
     );
-    if (loggedInAsId == userObj.id) {
+    if (loggedInUser.id == userObj.id) {
         // append extras
         wrapper.append(profile.editPfp, profile.editAbout);
         wrapper.removeChild(profile.followBtn);
@@ -273,7 +296,6 @@ function profilePageConstruct(userObj, wrapper) {
 
     profile.followBtn.onclick = () => follow(userObj);
 
-    // if (loggedInAsId.subs)
     wrapper.classList.add("userProfile")
     content.appendChild(wrapper);
     updateView();
@@ -283,47 +305,36 @@ function profilePageConstruct(userObj, wrapper) {
 function headerConstruct() {
     let mainHeader = { ...headerObj };
     mainHeader.wrapper = document.createElement("div");
+    mainHeader.UI = document.createElement("div");
     mainHeader.title = document.createElement("h1");
     mainHeader.title.textContent = "StalkBook";
     mainHeader.myProf = document.createElement("label");
     mainHeader.myProf.textContent = '';
+    mainHeader.logOut = document.createElement("button");
+    mainHeader.logOut.textContent = "Log out";
+
     
 
     mainHeader.wrapper.append(
         mainHeader.title,
-        mainHeader.myProf,
-       
-    );
-
-    
+        mainHeader.UI
+        );
 
     mainHeader.title.onclick = () => clickTitle();
-    
 
     header.append(mainHeader.wrapper);
     return mainHeader;
 
 }
 
-function clickTitle() {
-    if (isLoggedIn == true) {
-        currentPage = Pages.feedPage;
-        updateView();
-    }
-    else if(isLoggedIn == false){
-        return;
-    }
+function userUIDraw(){
+    headerMain.UI.append(headerMain.myProf, headerMain.logOut);
+    headerMain.logOut.addEventListener("click", userLogOut);
 }
 
-function goToCreate() {
-    if (isLoggedIn == true) {
-        currentPage = Pages.createPage;
-        updateView();
-    }
-    else if(isLoggedIn == false){
-        return;
-    }
-}
+
+
+
 
 
 
