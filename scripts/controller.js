@@ -29,6 +29,8 @@ function userLogIn() {
             feedPageDraw();
             userUIDraw();
             setTimeout(updateView, 300);
+            logInPage.wrapper.reset();
+            regPage.wrapper.reset();
         }
         else (console.log("Fail"))
     }
@@ -39,20 +41,17 @@ function userLogOut(){
     isLoggedIn = null;
     headerMain.UI.innerHTML = '';
     feedPage.post.innerHTML = '';
-    
-    
     currentPage = Pages.logInPage;
     updateView();
 }
 
 function goToReg() {
-    console.log("clicked");
     currentPage = Pages.regPage;
     updateView();
 }
 
 function follow(userObj) {
-    loggedInUser.subs.push(userObj);
+    loggedInUser.subs.push(userObj.id);
 
 }
 
@@ -68,6 +67,11 @@ function goToCreate() {
     }
 }
 
+function goToLogIn(){
+    currentPage = Pages.logInPage;
+    updateView();
+}
+
 function clickTitle() {
     if (isLoggedIn == true) {
         currentPage = Pages.feedPage;
@@ -81,7 +85,7 @@ function clickTitle() {
 
 
 
-// function editPfp(){
+// function fileUpload(){
 //     const fileInput = document.getElementById("regPfp");
 //     const selectedFile = fileInput.files[0];
 

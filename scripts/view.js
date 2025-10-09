@@ -9,10 +9,11 @@ Pages.logInPage = logInPage.wrapper;
 let feedPage = feedPageConstruct();
 Pages.feedPage = feedPage.wrapper;
 
-content.appendChild(feedPage.wrapper);
-
 let createPage = createPageConstruct();
 Pages.createPage = createPage.wrapper;
+
+content.appendChild(feedPage.wrapper);
+
 
 
 currentPage = Pages.logInPage;
@@ -35,9 +36,11 @@ function regFormConstruct() {
     //NOTE: pw strength detector 🤡
 
     let form = { ...regFormTemplate };
-    form.wrapper = document.createElement("div");
+    form.wrapper = document.createElement("form");
     form.header = document.createElement("h3");
     form.mail = document.createElement("input");
+    form.mail.autocapitalize = "none";
+    form.mail.type.autocomplete = "email";
     form.name = document.createElement("input");
     form.year = document.createElement("select");
     form.pw = document.createElement("input");
@@ -49,6 +52,7 @@ function regFormConstruct() {
     let yearLabel = document.createElement("label")
     let pwLabel = document.createElement("label")
     let newsLabel = document.createElement("label")
+    let toLogin = document.createElement("a");
 
     form.regBtn.textContent = "Register";
     form.header.textContent = "Join now!";
@@ -58,6 +62,10 @@ function regFormConstruct() {
     pwLabel.textContent = "Choose a password"
     form.tick.type = "checkbox"; form.tick.checked = "checked";
     newsLabel.textContent = "Yes, fill my inbox with adverts and spam ";
+    toLogin.href = "#";
+    toLogin.textContent = "Already a user? Log in here"
+    toLogin.onclick = () => goToLogIn();
+
     // Append
     form.wrapper.append(
         form.header,
@@ -70,7 +78,8 @@ function regFormConstruct() {
         pwLabel,
         form.pw,
         newsLabel,
-        form.regBtn
+        form.regBtn,
+        toLogin
     );
     newsLabel.append(form.tick)
 
@@ -90,7 +99,7 @@ function regFormConstruct() {
 
 function logInFormConstruct() {
     let form = { ...logIn };
-    form.wrapper = document.createElement("div");
+    form.wrapper = document.createElement("form");
 
     let mailLabel = document.createElement("label");
     mailLabel.textContent = "E-mail";
@@ -108,7 +117,8 @@ function logInFormConstruct() {
     form.loginBtn = document.createElement("button");
     form.loginBtn.textContent = "Log in";
 
-    let signUp = document.createElement("p");
+    let signUp = document.createElement("a");
+    signUp.href = "#"
     signUp.textContent = "Not a user? Sign up here";
 
     form.wrapper.append(
@@ -159,32 +169,31 @@ function feedOption() {
 }
 
 function toggleFeed(e) {
+
     if (e.target.value == 'Following') {
         console.log("Following ran");
-        filteredUsers.length = 0;
         feedPage.post.innerHTML = '';
-        filteredUsers = loggedInUser.subs.slice();
 
-        for (let i = 0; i < filteredUsers.length; i++) {
-            let authorNode = authorConstruct(filteredUsers[i]);
-            feedPage.post.appendChild(authorNode);
+        for (let i = 0; i < globalFeed.length; i++) {
+            let feedNode = globalFeed[i].article.wrapper;
+            if (loggedInUser.subs.includes(feedNode.authorId))
+
+                feedPage.post.append(feedNode);
         }
-
     }
     else if (e.target.value == 'All') {
         console.log("All ran");
-        filteredUsers.length = 0;
-        feedPage.post.innerHTML = '';
-        filteredUsers = usersRegistered.slice();
+        for (let i = 0; i < globalFeed.length; i++) {
+            let feedNode = globalFeed[i];
 
-        for (let i = 0; i < filteredUsers.length; i++) {
-            let authorNode = authorConstruct(filteredUsers[i]);
-            if (loggedInUser.id !== filteredUsers[i].id) {
-                feedPage.post.appendChild(authorNode);
-            }
+            feedPage.post.append(feedNode);
         }
     }
 }
+
+
+
+
 
 function feedPageConstruct() {
     let feed = { ...feedTemplate };
@@ -193,8 +202,8 @@ function feedPageConstruct() {
     feed.filter = feedOption();
     feed.createBtn = document.createElement("button");
     feed.createBtn.textContent = "Create Post";
-    feed.wrapper.append(feed.filter, feed.post);
-    feed.wrapper.append(feed.createBtn);
+
+    feed.wrapper.append(feed.filter, feed.createBtn, feed.post);
 
     feed.createBtn.onclick = () => goToCreate();
 
@@ -202,13 +211,13 @@ function feedPageConstruct() {
 }
 
 function feedPageDraw() {
-    filteredUsers = usersRegistered.slice();
+    filteredFeed = usersRegistered.slice();
 
-    for (let i = 0; i < filteredUsers.length; i++) {
-        let authorNode = authorConstruct(filteredUsers[i]);
-        if (loggedInUser.id !== filteredUsers[i].id) {
-            feedPage.post.appendChild(authorNode);
-        }
+    for (let i = 0; i < globalFeed.length; i++) {
+        let feedNode = globalFeed[i];
+
+        feedPage.post.append(feedNode);
+
     }
 }
 
@@ -234,23 +243,80 @@ function authorConstruct(userObj) {
 
 function createPageConstruct() {
     let create = {};
-    create.wrapper = document.createElement("div");
-    create.wrapper.textContent = "CREATE POST AND SUBMIT TO FEED";
-    create.placeholder = document.createElement("img");
-    create.placeholder.src = "media/image/up.png";
+    create.wrapper = document.createElement("form");
+
+    create.titleLabel = document.createElement("label");
+    create.titleLabel.textContent = "Give your post a title:";
+
+    create.title = document.createElement("input")
+    create.title.classList.add("createPage-title");
+
+    create.preview = document.createElement("div");
+
+    create.selectFile = document.createElement("input");
+    create.selectFile.type = "file";
+
+    create.descrLabel = document.createElement("label");
+    create.descrLabel.textContent = "Description:";
+
+    create.descr = document.createElement("input");
+    create.descr.classList.add("createPage-descr");
+    create.descr.type = Text;
+
     create.submitBtn = document.createElement("button");
     create.submitBtn.textContent = "Post now";
-    create.wrapper.append(create.placeholder);
-    create.wrapper.append(create.submitBtn)
+
+    create.preview.append(create.selectFile);
+
+    create.wrapper.append(
+        create.titleLabel,
+        create.title,
+        create.preview,
+        create.descrLabel,
+        create.descr,
+        create.submitBtn,
+    );
+
+    create.submitBtn.addEventListener("click", articleConstruct);
+
     content.append(create.wrapper);
     create.wrapper.classList.add("createPage");
+
     return create;
 }
 
 function articleConstruct() {
-    let article = {};
+    let authorBadge = authorConstruct(loggedInUser);
+    let authorId = loggedInUser.id;
+
+    let article = { ...postTemplate };
     article.wrapper = document.createElement("div");
+    article.title = document.createElement("h3")
     article.media = document.createElement("img");
+    article.descr = document.createElement("p");
+    article.likes = document.createElement("p");
+
+    article.title.textContent = createPage.title.value;
+    article.media.src = "media/image/scape.png"
+    article.descr.textContent = createPage.descr.value;
+    article.likes.textContent = "👍"
+
+    article.wrapper.append(
+        authorId,
+        authorBadge,
+        article.title,
+        article.media,
+        article.likes,
+        article.descr);
+    globalFeed.push(article);
+    loggedInUser.posts.push(article);
+
+    article.wrapper.classList.add("feedArticle")
+    feedPage.post.append(article.wrapper);
+
+    return article;
+
+
 }
 
 function profilePageView(userObj) {
@@ -313,12 +379,12 @@ function headerConstruct() {
     mainHeader.logOut = document.createElement("button");
     mainHeader.logOut.textContent = "Log out";
 
-    
+
 
     mainHeader.wrapper.append(
         mainHeader.title,
         mainHeader.UI
-        );
+    );
 
     mainHeader.title.onclick = () => clickTitle();
 
@@ -327,7 +393,7 @@ function headerConstruct() {
 
 }
 
-function userUIDraw(){
+function userUIDraw() {
     headerMain.UI.append(headerMain.myProf, headerMain.logOut);
     headerMain.logOut.addEventListener("click", userLogOut);
 }

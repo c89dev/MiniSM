@@ -3,7 +3,7 @@ const content = document.getElementById("content");
 let isLoggedIn = false;
 let loggedInUser;
 let userIdCount = 6;
-let filteredUsers = [];
+let filteredFeed = [];
 
 
 
@@ -20,7 +20,10 @@ let currentPage;
 let headerObj = {
     wrapper: {
         title: {},
-        myProf: {},
+        UI: {
+            myProf: {},
+            logOut: {},
+        }
     }
 }
 
@@ -52,7 +55,6 @@ let userTemplate = {
     age: null,
     pfp: "media/image/default_avatar.png",
     subs: [],
-    youFollow: false,
 }
 
 let profileTemplate = {
@@ -69,9 +71,11 @@ let profileTemplate = {
 
 let postTemplate = {
     wrapper: {
+        authorId: null,
         title: {},
         img: {},
         descr: {},
+        likes: 0,
     },
 }
 
@@ -85,10 +89,7 @@ let authorTemplate = {
 let feedTemplate = {
     wrapper: {
         filter: {},
-        post: {
-            author: {},
-            content: {},
-        },
+        post: [],
     }
 }
 
@@ -101,6 +102,8 @@ let articleTemp = {
     }
 }
 
+let globalFeed = []
+
 let usersRegistered = [
     {
         id: 0,
@@ -109,8 +112,8 @@ let usersRegistered = [
         name: 'Steezus Christ',
         age: 34,
         pfp: "media/image/steezus_avatar.png",
-        subs: [],
-        youFollow: false,
+        subs: [], // subscriptions
+        posts: [],
     },
     {
         id: 1,
@@ -120,7 +123,7 @@ let usersRegistered = [
         age: 87,
         pfp: "media/image/otto_avatar.png",
         subs: [],
-        youFollow: false,
+        posts: [],
     },
     {
         id: 2,
@@ -130,7 +133,7 @@ let usersRegistered = [
         age: 25,
         pfp: "media/image/cat_avatar.png",
         subs: [],
-        youFollow: false,
+        posts: [],
     },
     {
         id: 3,
@@ -140,7 +143,7 @@ let usersRegistered = [
         age: 63,
         pfp: "media/image/default_avatar.png",
         subs: [],
-        youFollow: false,
+        posts: [],
     },
     {
         id: 4,
@@ -150,7 +153,7 @@ let usersRegistered = [
         age: 21,
         pfp: "media/image/cass_avatar.png",
         subs: [],
-        youFollow: true,
+        posts: [],
     },
     {
         id: 5,
@@ -159,7 +162,7 @@ let usersRegistered = [
         name: 'Tester_01',
         age: 21,
         pfp: "media/image/default_avatar.png",
-        youFollow: true,
         subs: [],
+        posts: [],
     },
 ]
