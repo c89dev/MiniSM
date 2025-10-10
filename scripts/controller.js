@@ -1,42 +1,46 @@
 function registerNewUser() {
-    let currentRegistration = { ...userTemplate };
-    let selectedYear = regPage.year.value;
-    currentRegistration.mail = regPage.mail.value;
-    currentRegistration.name = regPage.name.value;
-    currentRegistration.age = calcAge(selectedYear);
-    currentRegistration.pw = regPage.pw.value;
-    currentRegistration.id = userIdCount++;
-    currentRegistration.pfp = userTemplate.pfp
+    if (checkIfEmail(regPage.mail.value)) {
+        let currentRegistration = { ...userTemplate };
+        let selectedYear = regPage.year.value;
+        currentRegistration.mail = regPage.mail.value;
+        currentRegistration.name = regPage.name.value;
+        currentRegistration.age = calcAge(selectedYear);
+        currentRegistration.pw = regPage.pw.value;
+        currentRegistration.id = userIdCount++;
+        currentRegistration.pfp = userTemplate.pfp
 
-    usersRegistered.push(currentRegistration);
-    currentPage = Pages.logInPage;
-    window.alert("Thank you for signing up. Redirecting to log in now.")
-    setTimeout(updateView, 2000);
-}
-
-function userLogIn() {
-    let mailInput = logInPage.mail.value;
-    let pwInput = logInPage.pw.value;
-    let userId;
-
-    for (let i = 0; i < usersRegistered.length; i++) {
-        if (mailInput == usersRegistered[i].mail && pwInput == usersRegistered[i].pw) {
-            headerMain.myProf.textContent = "Logged in as " + usersRegistered[i].name;
-            console.log("Success");
-            loggedInUser = usersRegistered[i];
-            currentPage = Pages.feedPage;
-            isLoggedIn = true;
-            feedPageDraw();
-            userUIDraw();
-            setTimeout(updateView, 300);
-            logInPage.wrapper.reset();
-            regPage.wrapper.reset();
-        }
-        else (console.log("Fail"))
+        usersRegistered.push(currentRegistration);
+        currentPage = Pages.logInPage;
+        window.alert("Thank you for signing up. Redirecting to log in now.")
+        setTimeout(updateView, 2000);
     }
 }
 
-function userLogOut(){
+function userLogIn() {
+    if (checkIfEmail(logInPage.mail.value)) {
+        let mailInput = logInPage.mail.value;
+        let pwInput = logInPage.pw.value;
+        let userId;
+
+        for (let i = 0; i < usersRegistered.length; i++) {
+            if (mailInput == usersRegistered[i].mail && pwInput == usersRegistered[i].pw) {
+                loggedInUser = usersRegistered[i];
+                isLoggedIn = true;
+                headerMain.myProf.textContent = "Logged in as " + usersRegistered[i].name;
+                console.log("Success");
+                feedPageDraw();
+                userUIDraw();
+                currentPage = Pages.feedPage;
+                setTimeout(updateView, 300);
+                logInPage.wrapper.reset();
+                regPage.wrapper.reset();
+            }
+            else (console.log("Fail"))
+        }
+    }
+}
+
+function userLogOut() {
     loggedInUser = null;
     isLoggedIn = null;
     headerMain.UI.innerHTML = '';
@@ -45,14 +49,20 @@ function userLogOut(){
     updateView();
 }
 
+function follow(e, userObj) {
+    if (!loggedInUser.subs.includes(userObj.id)) {
+        loggedInUser.subs.push(userObj.id);
+        e.target.textContent = "Unfollow";
+    }
+    else if (loggedInUser.subs.includes(userObj.id)) {
+        loggedInUser.subs.splice(loggedInUser.subs.indexOf(userObj.id), 1);
+        e.target.textContent = "Follow";
+    }
+}
+
 function goToReg() {
     currentPage = Pages.regPage;
     updateView();
-}
-
-function follow(userObj) {
-    loggedInUser.subs.push(userObj.id);
-
 }
 
 function goToCreate() {
@@ -67,7 +77,7 @@ function goToCreate() {
     }
 }
 
-function goToLogIn(){
+function goToLogIn() {
     currentPage = Pages.logInPage;
     updateView();
 }
@@ -81,6 +91,39 @@ function clickTitle() {
         return;
     }
 }
+
+function myProfile() {
+    profilePageView(loggedInUser);
+    updateView();
+}
+
+function newPfp(profile, userObj, e) {
+
+    const selectedFile = e.target.files[0];
+
+    let apply = document.createElement("button");
+    apply.textContent = "Apply"
+    profile.settings.append(apply);
+
+    apply.onclick = () => {
+    if (selectedFile) {
+        console.log("Applied PFP");
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                loggedInUser.pfp = e.target.result;
+                profile.pfp.src = e.target.result;
+            }
+            reader.readAsDataURL(selectedFile);
+
+            profile.settings.removeChild(apply);
+        }
+    }
+}
+
+// function toggleSettings(profile){
+//     profile.settings.classList.remove("invisible");
+// }
 
 
 

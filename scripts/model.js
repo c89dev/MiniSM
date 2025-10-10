@@ -3,18 +3,18 @@ const content = document.getElementById("content");
 let isLoggedIn = false;
 let loggedInUser;
 let userIdCount = 6;
-let filteredFeed = [];
+let globalFeed = [];
 
+//isme? function
 
+function isMe(userObj){
+    if (loggedInUser.id == userObj.id){
+        return true;
+    }
+    else{return false;}
+}
 
-// let Pages = {
-//     welcomePage: welcomePage,
-//     registrationPage: regPage.wrapper,
-//     feedPage: feedPage.wrapper,
-//     profilePage: logInPage.wrapper,
-// };
 let Pages = {}
-
 let currentPage;
 
 let headerObj = {
@@ -22,6 +22,7 @@ let headerObj = {
         title: {},
         UI: {
             myProf: {},
+            gotoProf: {},
             logOut: {},
         }
     }
@@ -55,6 +56,7 @@ let userTemplate = {
     age: null,
     pfp: "media/image/default_avatar.png",
     subs: [],
+    posts: [],
 }
 
 let profileTemplate = {
@@ -101,8 +103,6 @@ let articleTemp = {
         },
     }
 }
-
-let globalFeed = []
 
 let usersRegistered = [
     {
