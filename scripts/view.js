@@ -31,8 +31,6 @@ function updateView() {
 }
 
 function regFormConstruct() {
-    //NOTE: pw strength detector 🤡
-
     let form = { ...regFormTemplate };
     form.wrapper = document.createElement("form");
     form.header = document.createElement("h3");
@@ -199,7 +197,14 @@ function feedPageConstruct() {
     feed.createBtn = document.createElement("button");
     feed.createBtn.textContent = "Create Post";
 
-    feed.wrapper.append(feed.filter, feed.createBtn, feed.post);
+    feed.wrapper.append(
+        feed.filter,
+        feed.post,
+    );
+    feed.wrapper.prepend(
+        feed.createBtn,);
+
+    feed.createBtn.classList.add("createBtn");
 
     feed.createBtn.onclick = () => goToCreate();
 
@@ -216,21 +221,27 @@ function feedPageDraw() {
 }
 
 function authorConstruct(userObj) {
+    let d = new Date();
     let author = { ...authorTemplate };
     author.wrapper = document.createElement("div");
     author.name = document.createElement("div");
     author.pfp = document.createElement("img");
     author.name.textContent = userObj.name;
+    author.timestamp = document.createElement("p");
+    author.timestamp.textContent = d.toLocaleString();
     author.pfp.src = userObj.pfp;
 
     author.pfp.onclick = () => profilePageView(userObj);
+    author.name.onclick = () => profilePageView(userObj);
 
     // Append
-    author.wrapper.append(author.pfp, author.name);
+    author.wrapper.append(author.pfp, author.name, author.timestamp);
 
     // CSS
+    author.timestamp.classList.add("timestamp");
     author.pfp.classList.add("smallAvatar");
     author.wrapper.classList.add("author-wrapper")
+    author.name.classList.add("cursorpointer")
 
     return author.wrapper;
 }
@@ -239,35 +250,28 @@ function createPageConstruct() {
     let create = {};
     create.wrapper = document.createElement("form");
 
-    create.titleLabel = document.createElement("label");
-    create.titleLabel.textContent = "Give your post a title:";
-
-    create.title = document.createElement("input")
-    create.title.classList.add("createPage-title");
-
-    create.preview = document.createElement("div");
+    create.textLabel = document.createElement("label");
+    create.textLabel.textContent = "What's on your mind?";
+    create.text = document.createElement("input")
 
     create.selectFile = document.createElement("input");
     create.selectFile.type = "file";
 
-    create.descrLabel = document.createElement("label");
-    create.descrLabel.textContent = "Description:";
+    create.comment = document.createElement("input");
+    create.comment.placeholder = "Write a comment...";
 
-    create.descr = document.createElement("input");
-    create.descr.classList.add("createPage-descr");
-    create.descr.type = Text;
+    create.likes = document.createElement("p");
+    create.likes.textContent = "❤️"
 
     create.submitBtn = document.createElement("button");
     create.submitBtn.textContent = "Post now";
 
-    create.preview.append(create.selectFile);
+
 
     create.wrapper.append(
-        create.titleLabel,
-        create.title,
-        create.preview,
-        create.descrLabel,
-        create.descr,
+        create.textLabel,
+        create.text,
+        create.selectFile,
         create.submitBtn,
     );
 
@@ -286,18 +290,34 @@ function articleConstruct() {
     let authorBadge = authorConstruct(loggedInUser);
     let authorId = loggedInUser.id;
 
+
+    let article = { ...articleTemplate };
+    article.wrapper = document.createElement("div");
+    article.text = document.createElement("h3")
+    article.media = document.createElement("img");
+    article.interact = document.createElement("div");
+    article.likes = document.createElement("p");
+    article.comment = document.createElement("p");
+
+    article.text.textContent = createPage.text.value;
+    article.likes.textContent = "❤️";
+
+    article.authorId = authorId;
+
+    article.interact.append(article.likes, article.comment);
+
+    article.wrapper.append(
+        authorBadge,
+        article.text,
+        article.media,
+        article.interact,
+    );
+    // push data
+    globalFeed.push(article);
+    loggedInUser.posts.push(article);
+
     const fileInput = createPage.selectFile;
     const selectedFile = fileInput.files[0];
-
-    let article = { ...postTemplate };
-    article.wrapper = document.createElement("div");
-    article.title = document.createElement("h3")
-    article.media = document.createElement("img");
-    article.descr = document.createElement("p");
-    article.likes = document.createElement("p");
-
-    article.title.textContent = createPage.title.value;
-
     if (selectedFile) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -305,24 +325,10 @@ function articleConstruct() {
         }
         reader.readAsDataURL(selectedFile);
     }
-    else { article.media.src = null }
-
-    article.descr.textContent = createPage.descr.value;
-    article.likes.textContent = "👍"
-
-    article.authorId = authorId;
-    article.wrapper.append(
-
-        authorBadge,
-        article.title,
-        article.media,
-        article.likes,
-        article.descr);
-    // push data
-    globalFeed.push(article);
-    loggedInUser.posts.push(article);
+    else { article.wrapper.removeChild(article.media); }
 
     article.wrapper.classList.add("feedArticle")
+    article.media.classList.add("feedArticleMedia")
     feedPage.post.prepend(article.wrapper);
     createPage.wrapper.reset();
     currentPage = Pages.feedPage;
@@ -343,8 +349,6 @@ function profilePageView(userObj) {
 function profilePageConstruct(userObj, wrapper) {
     //has premade wrapper div and page (init)
 
-
-
     let profile = { ...profileTemplate };
     profile.pfp = document.createElement("img");
     profile.followBtn = document.createElement("button");
@@ -363,17 +367,19 @@ function profilePageConstruct(userObj, wrapper) {
     profile.editPfp = document.createElement("label");
 
     profile.pfp.src = userObj.pfp;
-    profile.followBtn.textContent = loggedInUser.subs.includes(userObj.id) ? "Unfollow" : "Follow";
+    profile.followBtn.textContent = loggedInUser.subs.includes(userObj.id) 
+    ? "Unfollow" 
+    : "Follow";
     profile.name.textContent = "Name: " + userObj.name;
     profile.age.textContent = "Age: " + userObj.age;
-    profile.about.textContent = "Here's some interesting information about me";
+    profile.about.textContent = userObj.about;
     profile.editPfp.textContent = "Change profile image";
     profile.editAbout.textContent = "Edit About";
     // settings wrapper
     profile.settings.append(
         profile.editPfp,
         profile.pfpLoad,
-        // profile.editAbout,
+        profile.editAbout,
     );
 
     // main wrapper
@@ -381,33 +387,33 @@ function profilePageConstruct(userObj, wrapper) {
         profile.settingsBtn,
         profile.settings,
         profile.pfp);
-        if(!isMe){ wrapper.append(profile.followBtn)}
-    wrapper.append(    
+    if (!isMe) { wrapper.append(profile.followBtn) }
+    wrapper.append(
         profile.name,
         profile.age,
         profile.about,
     );
     if (!isMe(userObj)) {
-        console.log("This is not me")
-        
         wrapper.removeChild(profile.settingsBtn)
         wrapper.removeChild(profile.settings)
         wrapper.append(profile.followBtn);
         profile.followBtn.addEventListener("click", (e) => follow(e, userObj));
     }
-    
-    profile.pfpLoad.addEventListener("change", (e) => newPfp(profile, userObj, e));
-    
-    profile.settingsBtn.addEventListener("click", () => {
-        if (profile.settings.classList == "invisible" 
+
+        profile.settingsBtn.addEventListener("click", () => {
+        if (profile.settings.classList == "invisible"
             ? profile.settings.classList.remove("invisible")
             : profile.settings.classList.add("invisible")
         );
     });
-    
+    profile.pfpLoad.addEventListener("change", (e) => newPfp(profile, userObj, e));
+    profile.editAbout.addEventListener("click", (e) => {
+        editAbout(userObj);
+    });
+
     profile.settings.classList.add("invisible");
-    wrapper.classList.add("userProfile")
-    content.append(wrapper);
+    wrapper.classList.add("userProfile");
+    profile.about.classList.add("about");
     updateView();
     return profile;
 }
@@ -416,12 +422,16 @@ function headerConstruct() {
     let mainHeader = { ...headerObj };
     mainHeader.wrapper = document.createElement("div");
     mainHeader.UI = document.createElement("div");
+
     mainHeader.title = document.createElement("h1");
     mainHeader.title.textContent = "StalkBook";
+
     mainHeader.myProf = document.createElement("label");
     mainHeader.myProf.textContent = '';
+
     mainHeader.logOut = document.createElement("button");
     mainHeader.logOut.textContent = "Log out";
+
     mainHeader.goToProf = document.createElement("button");
     mainHeader.goToProf.textContent = "My profile";
 
@@ -430,6 +440,7 @@ function headerConstruct() {
         mainHeader.UI
     );
     mainHeader.UI.classList.add("headerUI");
+    mainHeader.title.classList.add("stalkBook");
 
     mainHeader.title.onclick = () => clickTitle();
 

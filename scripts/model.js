@@ -4,16 +4,6 @@ let isLoggedIn = false;
 let loggedInUser;
 let userIdCount = 6;
 let globalFeed = [];
-
-//isme? function
-
-function isMe(userObj){
-    if (loggedInUser.id == userObj.id){
-        return true;
-    }
-    else{return false;}
-}
-
 let Pages = {}
 let currentPage;
 
@@ -22,7 +12,7 @@ let headerObj = {
         title: {},
         UI: {
             myProf: {},
-            gotoProf: {},
+            goToProf: {},
             logOut: {},
         }
     }
@@ -54,6 +44,7 @@ let userTemplate = {
     pw: null,
     name: '',
     age: null,
+    about: 'Information about this user',
     pfp: "media/image/default_avatar.png",
     subs: [],
     posts: [],
@@ -71,13 +62,15 @@ let profileTemplate = {
     }
 }
 
-let postTemplate = {
+let articleTemplate = {
     wrapper: {
         authorId: null,
-        title: {},
+        text: {},
         img: {},
-        descr: {},
-        likes: 0,
+        interact: {
+            likes: 0,
+            comment: {},
+        }
     },
 }
 
@@ -95,15 +88,6 @@ let feedTemplate = {
     }
 }
 
-let articleTemp = {
-    wrapper: {
-        post: {
-            author: {},
-            content: {},
-        },
-    }
-}
-
 let usersRegistered = [
     {
         id: 0,
@@ -111,6 +95,7 @@ let usersRegistered = [
         pw: '123',
         name: 'Steezus Christ',
         age: 34,
+        about: 'Something interesting',
         pfp: "media/image/steezus_avatar.png",
         subs: [], // subscriptions
         posts: [],
@@ -121,16 +106,18 @@ let usersRegistered = [
         pw: '1337',
         name: 'Otto Von Vittu',
         age: 87,
+        about: 'Something interesting',
         pfp: "media/image/otto_avatar.png",
         subs: [],
         posts: [],
     },
     {
         id: 2,
-        mail: '',
-        pw: null,
+        mail: 'martha@sb.com',
+        pw: 123,
         name: 'Martha Lindgren',
         age: 25,
+        about: 'Something interesting',
         pfp: "media/image/cat_avatar.png",
         subs: [],
         posts: [],
@@ -141,6 +128,7 @@ let usersRegistered = [
         pw: null,
         name: 'Bill Myers',
         age: 63,
+        about: 'Something interesting',
         pfp: "media/image/default_avatar.png",
         subs: [],
         posts: [],
@@ -151,6 +139,7 @@ let usersRegistered = [
         pw: null,
         name: 'Cassandra Vargas',
         age: 21,
+        about: 'Something interesting',
         pfp: "media/image/cass_avatar.png",
         subs: [],
         posts: [],
@@ -161,6 +150,7 @@ let usersRegistered = [
         pw: 2,
         name: 'Tester_01',
         age: 21,
+        about: 'Something interesting',
         pfp: "media/image/default_avatar.png",
         subs: [],
         posts: [],

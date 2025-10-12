@@ -11,6 +11,9 @@ button, input, select {
     font-size: 1rem;
     padding: 0.5em 1em;
 }
+.cursorpointer{
+    cursor: pointer;
+}
 p{
     background-color: rgba(255, 255, 255, 0.135);
 }
@@ -25,13 +28,18 @@ button{
     flex: 1;
     min-height: 100%;
     padding: 10%;
-    
-    
 }
+.createBtn{
+    display: flex;
+    font-size: 25px;
+    justify-self: center;
+    text-align: center;
+}
+
 .Form{
     font-size: 21px;
-    padding-left: 25%;
-    padding-right: 25%;
+    padding-left: 22%;
+    padding-right: 22%;
     display: flex;
     flex-direction: column;
     gap: 5%;
@@ -43,11 +51,13 @@ button{
 
 /* PAGES */
 .userProfile{
+
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     font-size: 21px;
     padding: 5%;
+    gap: 25px;
     background-image: linear-gradient(rgb(174, 174, 174), rgb(161, 161, 161));
 }
 .userProfile > button{
@@ -59,50 +69,46 @@ button{
 .createPage{
     display: flex;
     flex-direction: column;
-    
-}
-.createPage > div{
-    display: flex;
-    outline-style: dotted;
-    background-color: rgb(133, 166, 205);
-}
-.createPage-title{
-    padding: 1%;
-}
-.createPage-descr{
-    padding: 5%;
+    font-size: 21px;
+    background-color: rgba(255, 255, 255, 0.271);
 }
 
 /* POSTS/BADGES */
 .author-wrapper {
-    font-size: 26px;
     display: flex;
+    margin-left: 2%;
+    font-size: 26px;
     align-items: center;
     gap: 0.5rem;
-    background-image: linear-gradient(rgb(163, 163, 163), white);
-    border: 4px solid grey;
+    background-image: linear-gradient(
+        to right, rgb(214, 214, 214), rgba(127, 167, 181, 0));
+    width: 80%;
+}
+.timestamp{
+    font-size: 12px;
 }
 .feedArticle{
-    overflow-x: hidden;
-    display: grid;
-    padding-left: 10%;
-    padding-top: 3%;
-    padding-bottom: 3%;
-    border: 55px solid rgb(122, 122, 122);
-    border-radius: 5%;
-    background-image: linear-gradient(rgb(173, 173, 175), rgb(155, 160, 164));
+    padding-left: 4%;
+    padding-top: 2%;
+    border-left: 15px rgb(122, 122, 122);
+    border-radius: 2%;
+    background-image: linear-gradient(to right, 
+    rgb(150, 150, 150), rgba(147, 147, 147, 0.224));
 }
-.feedArticle > img{
-    display: flex;
-    width: 70%;
-    height: auto;
+.feedArticleMedia {
+  border-radius: 10%;
+  object-fit: cover;
+  display: block;
+  clip-path: inset(0 round 10%);
+  width: 70%;
+  height: auto;
 }
 
-/* .feedArticle img{
-    width: 40%;
-    height: auto;
-} */
+.feedArticle > p{
+    padding: 1%;
+}
 .smallAvatar{
+    box-shadow: rgba(0, 0, 0, 0.449) 3px 5px 12px;
     width: 55px;
     height: 55px;
     border-radius: 50%;
@@ -115,19 +121,34 @@ button{
     height: auto;
 }
 .header{
+    box-shadow: rgba(0, 0, 0, 0.335) 1px 8px 12px;
     display: flex;
-    gap: 22%;
     background-image: linear-gradient(rgb(55, 56, 59), rgb(0, 0, 0));
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
     font-weight: bold;
     padding-bottom: 2%;
-    padding-left: 2%;
+    padding-left: 4%;
     padding-top: 2%;
 }
+.stalkBook{
+    cursor: pointer;
+    display: flex;
+    padding-bottom: 5%;
+}
+.headerUI{
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    margin: 2%;
+    width: 90%;
+}
+.headerUI > label{
+    width: 25%;
+    font-size: 11px;
+    display: flex;
+}
 footer{
-    display: grid;
-    align-self: center;
-    padding-left: 35%;
-    padding-top: 10%;
+    display: flex;
+    justify-content: center
 }

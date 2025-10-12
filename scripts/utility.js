@@ -1,3 +1,10 @@
+function isMe(userObj) {
+    if (loggedInUser.id == userObj.id) {
+        return true;
+    }
+    else { return false; }
+}
+
 function populateYears(){
     const yearOption = document.getElementById("regYear")
     for (let y = 1900; y < 2025; y++){

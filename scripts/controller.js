@@ -17,7 +17,7 @@ function registerNewUser() {
 }
 
 function userLogIn() {
-    if (checkIfEmail(logInPage.mail.value)) {
+    // if (checkIfEmail(logInPage.mail.value)) {
         let mailInput = logInPage.mail.value;
         let pwInput = logInPage.pw.value;
         let userId;
@@ -38,7 +38,7 @@ function userLogIn() {
             else (console.log("Fail"))
         }
     }
-}
+// }
 
 function userLogOut() {
     loggedInUser = null;
@@ -103,7 +103,7 @@ function newPfp(profile, userObj, e) {
 
     let apply = document.createElement("button");
     apply.textContent = "Apply"
-    profile.settings.append(apply);
+    profile.editPfp.prepend(apply);
 
     apply.onclick = () => {
     if (selectedFile) {
@@ -116,14 +116,30 @@ function newPfp(profile, userObj, e) {
             }
             reader.readAsDataURL(selectedFile);
 
-            profile.settings.removeChild(apply);
+            profile.editPfp.removeChild(apply);
         }
     }
 }
 
-// function toggleSettings(profile){
-//     profile.settings.classList.remove("invisible");
-// }
+function editAbout(userObj){
+    let about = Pages.profilePage.querySelector(".about");
+    let prev = loggedInUser.about;
+    let newInput = document.createElement("input");
+    let apply = document.createElement("button");
+    apply.textContent = "Apply";
+    console.log("HEY");
+    Pages.profilePage.append(newInput);
+    newInput.value = prev;
+    Pages.profilePage.removeChild(about);
+    Pages.profilePage.append(apply);
+    apply.onclick = () => {
+        userObj.about = newInput.value;
+        Pages.profilePage.removeChild(newInput);
+        Pages.profilePage.append(about);
+        about.textContent = userObj.about;
+        Pages.profilePage.removeChild(apply);
+    }
+}
 
 
 
