@@ -25,6 +25,7 @@ let regFormTemplate = {
         name: {},
         year: {},
         pw: {},
+        pwr: {},
         tick: {},
         regBtn: {},
     }
@@ -156,3 +157,4 @@ let usersRegistered = [
         posts: [],
     },
 ]
+

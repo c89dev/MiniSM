@@ -40,48 +40,57 @@ function regFormConstruct() {
     form.name = document.createElement("input");
     form.year = document.createElement("select");
     form.pw = document.createElement("input");
+    form.pwr = document.createElement("input");
     form.tick = document.createElement("input");
     form.regBtn = document.createElement("button");
 
     form.mail.required = true;
     form.name.required = true;
     form.pw.required = true;
+    form.pwr.required = true;
+    form.pw.type = "password";
+    form.pwr.type = "password";
 
-    let mailLabel = document.createElement("label")
-    let nameLabel = document.createElement("label")
-    let yearLabel = document.createElement("label")
-    let pwLabel = document.createElement("label")
-    let newsLabel = document.createElement("label")
-    let toLogin = document.createElement("a");
+    form.mailLabel = document.createElement("label");
+    form.nameLabel = document.createElement("label");
+    form.yearLabel = document.createElement("label");
+    form.pwLabel = document.createElement("label");
+    form.pwrLabel = document.createElement("label");
+    form.newsLabel = document.createElement("label");
+    form.toLogin = document.createElement("a");
 
     form.regBtn.textContent = "Register";
     form.header.textContent = "Join now!";
-    mailLabel.textContent = "E-mail";
-    nameLabel.textContent = "Name";
-    yearLabel.textContent = "Year of birth";
-    pwLabel.textContent = "Choose a password"
-    form.tick.type = "checkbox"; form.tick.checked = "checked";
-    newsLabel.textContent = "Yes, fill my inbox with adverts and spam ";
-    toLogin.href = "#";
-    toLogin.textContent = "Already a user? Log in here"
-    toLogin.onclick = () => goToLogIn();
+    form.mailLabel.textContent = "E-mail";
+    form.nameLabel.textContent = "Name";
+    form.yearLabel.textContent = "Year of birth";
+    form.pwLabel.textContent = "Choose a password";
+    form.pwrLabel.textContent = "Repeat password";
+    form.tick.type = "checkbox";
+    form.tick.checked = "checked";
+    form.newsLabel.textContent = "Yes, fill my inbox with adverts and spam ";
+    form.toLogin.href = "#";
+    form.toLogin.textContent = "Already a user? Log in here";
+    form.toLogin.onclick = () => goToLogIn();
 
     // Append
     form.wrapper.append(
         form.header,
-        mailLabel,
+        form.mailLabel,
         form.mail,
-        nameLabel,
+        form.nameLabel,
         form.name,
-        yearLabel,
+        form.yearLabel,
         form.year,
-        pwLabel,
+        form.pwLabel,
         form.pw,
-        newsLabel,
+        form.pwrLabel,
+        form.pwr,
+        form.newsLabel,
         form.regBtn,
-        toLogin
+        form.toLogin,
     );
-    newsLabel.append(form.tick)
+    form.newsLabel.append(form.tick);
 
     for (let y = 1900; y < 2026; y++) {
         let option = document.createElement("option");
@@ -93,7 +102,7 @@ function regFormConstruct() {
     form.wrapper.onsubmit = (e) => {
         e.preventDefault();
         registerNewUser();
-    }
+    };
 
     form.wrapper.classList.add("Form");
     content.append(form.wrapper);
@@ -116,7 +125,6 @@ function logInFormConstruct() {
     form.pw.type = "password";
     form.pw.type.autocapitalize = "none";
 
-
     form.loginBtn = document.createElement("button");
     form.loginBtn.textContent = "Log in";
 
@@ -133,13 +141,13 @@ function logInFormConstruct() {
         pwLabel,
         form.pw,
         form.loginBtn,
-        signUp
+        signUp,
     );
     signUp.onclick = () => goToReg();
     form.wrapper.onsubmit = (e) => {
         e.preventDefault();
         userLogIn();
-    }
+    };
 
     form.wrapper.classList.add("Form");
     content.append(form.wrapper);
@@ -152,10 +160,10 @@ function feedOption() {
     menu.select = document.createElement("select");
     menu.optionA = document.createElement("option");
     menu.optionB = document.createElement("option");
-    menu.optionA.textContent = 'All';
-    menu.optionB.textContent = 'Following';
-    menu.optionA.value = 'All';
-    menu.optionB.value = 'Following';
+    menu.optionA.textContent = "All";
+    menu.optionB.textContent = "Following";
+    menu.optionA.value = "All";
+    menu.optionB.value = "Following";
 
     menu.select.append(menu.optionA, menu.optionB);
     menu.wrapper.append(menu.select);
@@ -166,20 +174,20 @@ function feedOption() {
 }
 
 function toggleFeed(e) {
-    feedPage.post.innerHTML = '';
+    feedPage.post.innerHTML = "";
 
-    if (e.target.value == 'Following') {
+    if (e.target.value == "Following") {
         console.log("Following ran");
 
         for (let i = 0; i < globalFeed.length; i++) {
             let feedNode = globalFeed[i];
             if (loggedInUser.subs.includes(feedNode.authorId)) {
                 feedPage.post.prepend(feedNode.wrapper);
+            } else {
+                console.log("No content from followers");
             }
-            else { console.log("No content from followers") }
         }
-    }
-    else if (e.target.value == 'All') {
+    } else if (e.target.value == "All") {
         console.log("All ran");
         for (let i = 0; i < globalFeed.length; i++) {
             let feedNode = globalFeed[i];
@@ -197,12 +205,8 @@ function feedPageConstruct() {
     feed.createBtn = document.createElement("button");
     feed.createBtn.textContent = "Create Post";
 
-    feed.wrapper.append(
-        feed.filter,
-        feed.post,
-    );
-    feed.wrapper.prepend(
-        feed.createBtn,);
+    feed.wrapper.append(feed.filter, feed.post);
+    feed.wrapper.prepend(feed.createBtn);
 
     feed.createBtn.classList.add("createBtn");
 
@@ -216,7 +220,6 @@ function feedPageDraw() {
         let feedNode = globalFeed[i].wrapper;
 
         feedPage.post.prepend(feedNode);
-
     }
 }
 
@@ -240,8 +243,8 @@ function authorConstruct(userObj) {
     // CSS
     author.timestamp.classList.add("timestamp");
     author.pfp.classList.add("smallAvatar");
-    author.wrapper.classList.add("author-wrapper")
-    author.name.classList.add("cursorpointer")
+    author.wrapper.classList.add("author-wrapper");
+    author.name.classList.add("cursorpointer");
 
     return author.wrapper;
 }
@@ -252,7 +255,7 @@ function createPageConstruct() {
 
     create.textLabel = document.createElement("label");
     create.textLabel.textContent = "What's on your mind?";
-    create.text = document.createElement("input")
+    create.text = document.createElement("input");
 
     create.selectFile = document.createElement("input");
     create.selectFile.type = "file";
@@ -261,12 +264,10 @@ function createPageConstruct() {
     create.comment.placeholder = "Write a comment...";
 
     create.likes = document.createElement("p");
-    create.likes.textContent = "❤️"
+    create.likes.textContent = "❤️";
 
     create.submitBtn = document.createElement("button");
     create.submitBtn.textContent = "Post now";
-
-
 
     create.wrapper.append(
         create.textLabel,
@@ -278,7 +279,7 @@ function createPageConstruct() {
     create.wrapper.onsubmit = (e) => {
         e.preventDefault();
         articleConstruct();
-    }
+    };
 
     content.append(create.wrapper);
     create.wrapper.classList.add("createPage");
@@ -290,10 +291,9 @@ function articleConstruct() {
     let authorBadge = authorConstruct(loggedInUser);
     let authorId = loggedInUser.id;
 
-
     let article = { ...articleTemplate };
     article.wrapper = document.createElement("div");
-    article.text = document.createElement("h3")
+    article.text = document.createElement("h3");
     article.media = document.createElement("img");
     article.interact = document.createElement("div");
     article.likes = document.createElement("p");
@@ -322,13 +322,14 @@ function articleConstruct() {
         const reader = new FileReader();
         reader.onload = (e) => {
             article.media.src = e.target.result;
-        }
+        };
         reader.readAsDataURL(selectedFile);
+    } else {
+        article.wrapper.removeChild(article.media);
     }
-    else { article.wrapper.removeChild(article.media); }
 
-    article.wrapper.classList.add("feedArticle")
-    article.media.classList.add("feedArticleMedia")
+    article.wrapper.classList.add("feedArticle");
+    article.media.classList.add("feedArticleMedia");
     feedPage.post.prepend(article.wrapper);
     createPage.wrapper.reset();
     currentPage = Pages.feedPage;
@@ -341,13 +342,13 @@ function articleConstruct() {
 function profilePageView(userObj) {
     currentPage = Pages.profilePage;
     const wrapper = Pages.profilePage;
-    wrapper.innerHTML = '';
+    wrapper.innerHTML = "";
     profilePageConstruct(userObj, wrapper);
     updateView();
 }
 
 function profilePageConstruct(userObj, wrapper) {
-    //has premade wrapper div and page (init)
+    //has premade empty wrapper div and page (init)
 
     let profile = { ...profileTemplate };
     profile.pfp = document.createElement("img");
@@ -358,7 +359,7 @@ function profilePageConstruct(userObj, wrapper) {
 
     profile.settings = document.createElement("div");
     profile.settingsBtn = document.createElement("button");
-    profile.settingsBtn.textContent = "⚙️"
+    profile.settingsBtn.textContent = "⚙️";
 
     profile.editAbout = document.createElement("button");
     profile.pfpLoad = document.createElement("input");
@@ -367,46 +368,40 @@ function profilePageConstruct(userObj, wrapper) {
     profile.editPfp = document.createElement("label");
 
     profile.pfp.src = userObj.pfp;
-    profile.followBtn.textContent = loggedInUser.subs.includes(userObj.id) 
-    ? "Unfollow" 
-    : "Follow";
+    profile.followBtn.textContent = loggedInUser.subs.includes(userObj.id)
+        ? "Unfollow"
+        : "Follow";
     profile.name.textContent = "Name: " + userObj.name;
     profile.age.textContent = "Age: " + userObj.age;
     profile.about.textContent = userObj.about;
     profile.editPfp.textContent = "Change profile image";
     profile.editAbout.textContent = "Edit About";
     // settings wrapper
-    profile.settings.append(
-        profile.editPfp,
-        profile.pfpLoad,
-        profile.editAbout,
-    );
+    profile.settings.append(profile.editPfp, profile.pfpLoad, profile.editAbout);
 
     // main wrapper
-    wrapper.append(
-        profile.settingsBtn,
-        profile.settings,
-        profile.pfp);
-    if (!isMe) { wrapper.append(profile.followBtn) }
-    wrapper.append(
-        profile.name,
-        profile.age,
-        profile.about,
-    );
+    wrapper.append(profile.settingsBtn, profile.settings, profile.pfp);
+    if (!isMe) {
+        wrapper.append(profile.followBtn);
+    }
+    wrapper.append(profile.name, profile.age, profile.about);
     if (!isMe(userObj)) {
-        wrapper.removeChild(profile.settingsBtn)
-        wrapper.removeChild(profile.settings)
+        wrapper.removeChild(profile.settingsBtn);
+        wrapper.removeChild(profile.settings);
         wrapper.append(profile.followBtn);
         profile.followBtn.addEventListener("click", (e) => follow(e, userObj));
     }
 
-        profile.settingsBtn.addEventListener("click", () => {
-        if (profile.settings.classList == "invisible"
-            ? profile.settings.classList.remove("invisible")
-            : profile.settings.classList.add("invisible")
+    profile.settingsBtn.addEventListener("click", () => {
+        if (
+            profile.settings.classList == "invisible"
+                ? profile.settings.classList.remove("invisible")
+                : profile.settings.classList.add("invisible")
         );
     });
-    profile.pfpLoad.addEventListener("change", (e) => newPfp(profile, userObj, e));
+    profile.pfpLoad.addEventListener("change", (e) =>
+        newPfp(profile, userObj, e),
+    );
     profile.editAbout.addEventListener("click", (e) => {
         editAbout(userObj);
     });
@@ -427,7 +422,7 @@ function headerConstruct() {
     mainHeader.title.textContent = "StalkBook";
 
     mainHeader.myProf = document.createElement("label");
-    mainHeader.myProf.textContent = '';
+    mainHeader.myProf.textContent = "";
 
     mainHeader.logOut = document.createElement("button");
     mainHeader.logOut.textContent = "Log out";
@@ -435,10 +430,7 @@ function headerConstruct() {
     mainHeader.goToProf = document.createElement("button");
     mainHeader.goToProf.textContent = "My profile";
 
-    mainHeader.wrapper.append(
-        mainHeader.title,
-        mainHeader.UI
-    );
+    mainHeader.wrapper.append(mainHeader.title, mainHeader.UI);
     mainHeader.UI.classList.add("headerUI");
     mainHeader.title.classList.add("stalkBook");
 
@@ -449,15 +441,11 @@ function headerConstruct() {
 }
 
 function userUIDraw() {
-    headerMain.UI.append(headerMain.myProf, headerMain.logOut, headerMain.goToProf);
+    headerMain.UI.append(
+        headerMain.myProf,
+        headerMain.logOut,
+        headerMain.goToProf,
+    );
     headerMain.logOut.addEventListener("click", userLogOut);
     headerMain.goToProf.addEventListener("click", myProfile);
 }
-
-
-
-
-
-
-
-
