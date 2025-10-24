@@ -1,3 +1,5 @@
-contained div with interaction section on POSTS
-password strength checker
-offset badge avatar
+[] contained div with interaction section on POSTS
+[] password strength checker
+[] offset badge avatar
+[] check for existing user (mail)
+[] split up view functions

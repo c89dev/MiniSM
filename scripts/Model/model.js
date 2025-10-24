@@ -1,11 +1,15 @@
-const header = document.getElementById("header");
-const content = document.getElementById("content");
+let headerMain;
+let regPage;
+let logInPage;
+let feedPage;
+let createPage;
+let currentPage;
+
 let isLoggedIn = false;
 let loggedInUser;
 let userIdCount = 6;
 let globalFeed = [];
 let Pages = {}
-let currentPage;
 
 let headerObj = {
     wrapper: {
