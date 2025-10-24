@@ -2,4 +2,4 @@
 [] password strength checker
 [] offset badge avatar
 [] check for existing user (mail)
-[] split up view functions
+[x] split up view functions
