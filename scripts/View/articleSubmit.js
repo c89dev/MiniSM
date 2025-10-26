@@ -1,5 +1,6 @@
 function articleConstruct() {
     let authorBadge = authorConstruct(loggedInUser);
+    let articleId = '';
     let authorId = loggedInUser.id;
 
     let article = { ...articleTemplate };
@@ -7,15 +8,21 @@ function articleConstruct() {
     article.text = document.createElement("h3");
     article.media = document.createElement("img");
     article.interact = document.createElement("div");
-    article.likes = document.createElement("p");
+    article.likeBtn = document.createElement("p");
+    article.likeCount = document.createElement("p");
     article.comment = document.createElement("p");
 
     article.text.textContent = createPage.text.value;
-    article.likes.textContent = "❤️";
+    article.likeBtn.textContent = "❤️‍🔥";
+    article.likeCount.textContent = null;
+    
 
-    article.authorId = authorId;
-
-    article.interact.append(article.likes, article.comment);
+    
+    article.interact.append(
+        article.likeBtn,
+        article.likeCount,
+        article.comment);
+    
 
     article.wrapper.append(
         authorBadge,
@@ -23,10 +30,6 @@ function articleConstruct() {
         article.media,
         article.interact,
     );
-    // push data
-    globalFeed.push(article);
-    loggedInUser.posts.push(article);
-
     const fileInput = createPage.selectFile;
     const selectedFile = fileInput.files[0];
     if (selectedFile) {
@@ -38,15 +41,19 @@ function articleConstruct() {
     } else {
         article.wrapper.removeChild(article.media);
     }
+    article.likeBtn.addEventListener("click", () => {
+        likeArticle(article, loggedInUser, article.likeBtn);
+    });
 
     article.wrapper.classList.add("feedArticle");
     article.media.classList.add("feedArticleMedia");
+    article.interact.classList.add("interact");
     feedPage.post.prepend(article.wrapper);
     createPage.wrapper.reset();
     currentPage = Pages.feedPage;
     updateView();
 
-    console.log(article);
+    archivePost(article);
     return article;
 }
 

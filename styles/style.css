@@ -1,13 +1,7 @@
-/* *{ */
-/*     margin: 0; */
-/*     padding: 0; */
-/*     box-sizing: border-box; */
-/* } */
-
-body{
+html, body{
     height: 100%;
     margin: 0;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(81, 81, 81);
     font-family: Arial, Helvetica, sans-serif;
 }
 .invisible{
@@ -20,71 +14,64 @@ button, input, select {
 .cursorpointer{
     cursor: pointer;
 }
-p{
-    background-color: rgba(255, 255, 255, 0.135);
-}
 button{
     background-color: black;
     color: white;
 }
+a{
+    color: cyan;
+}
+.nudge{
+    transition: transform 0.1;
+}
 .content{
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 1rem;
-    flex: 1;
     padding: 10%;
 }
 .createBtn{
     align-self: center !important;
-    display: flex;
     font-size: 25px;
     justify-self: center;
     text-align: center;
 }
 
 .Form{
-    font-size: 21px;
-    padding-left: 22%;
-    padding-right: 22%;
-    display: flex;
-    flex-direction: column;
-    gap: 5%;
-    background-color: rgba(255, 255, 255, 0.298);
-}
-.content > label{
-    font-size: 21px;
-}
+    display: grid;
+    grid-auto-flow: row;
+    gap: 4%;
+    font-size: 25px;
+  }
 
 /* PAGES */
 .userProfile{
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    gap: 1rem;
     font-size: 21px;
     padding: 5%;
-    gap: 25px;
     background-image: linear-gradient(rgb(174, 174, 174), rgb(161, 161, 161));
 }
 .userProfile > button{
-    width: 25%;
+    display: grid;
+    gap: 1rem;
+
+    
 }
 .profileSettings{
-    display: flex;
 }
 .createPage{
-    display: flex;
-    flex-direction: column;
+    display: grid;
     font-size: 21px;
     background-color: rgba(255, 255, 255, 0.271);
 }
 
 /* POSTS/BADGES */
 .author-wrapper {
-    display: flex;
-    margin-left: 2%;
+    display: grid;
+    grid-auto-flow: column;
     font-size: 26px;
     align-items: center;
+    padding: 2%;
     gap: 0.5rem;
     background-image: linear-gradient(
         to right, rgb(214, 214, 214), rgba(127, 167, 181, 0));
@@ -93,25 +80,50 @@ button{
 .timestamp{
     font-size: 12px;
 }
+
+/* FEED STUFF*/
+.feed{
+    display: grid;
+    gap: 1rem;
+}
 .feedArticle{
-    padding-left: 4%;
-    padding-top: 2%;
-    border-left: 15px rgb(122, 122, 122);
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding: 5%;
+    margin-bottom: 5%;
     border-radius: 2%;
     background-image: linear-gradient(to right, 
-    rgb(150, 150, 150), rgba(147, 147, 147, 0.624));
+    rgb(120, 120, 120), rgba(121, 121, 121, 0.624));
 }
 .feedArticleMedia {
+
+  box-shadow: rgba(0, 0, 0, 0.335) 1px 8px 12px;
   border-radius: 10%;
   object-fit: cover;
-  display: block;
   clip-path: inset(0 round 10%);
-  width: 70%;
+  width: 100%;
+  max-width: 100%;
   height: auto;
 }
-
-.feedArticle > p{
+.interact{
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5rem;
     padding: 1%;
+    width: 150px;
+    align-items: center;
+    font-size: 34px;
+    border-radius: 25%;
+
+      user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+}
+.interact > div{
+    
+    box-shadow: rgba(0, 0, 0, 0.335) 1px 8px 12px;
 }
 .smallAvatar{
     box-shadow: rgba(0, 0, 0, 0.449) 3px 5px 12px;
@@ -128,35 +140,26 @@ button{
 }
 .header{
     box-shadow: rgba(0, 0, 0, 0.335) 1px 8px 12px;
-    display: flex;
     background-image: linear-gradient(rgb(55, 56, 59), rgb(0, 0, 0));
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: white;
     font-weight: bold;
-    padding-bottom: 2%;
     padding-left: 4%;
     padding-top: 2%;
-}
-.stalkBook{
-    cursor: pointer;
-    display: flex;
-    padding-bottom: 5%;
+    height: 20%;
 }
 .headerUI{
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
-    margin: 2%;
-    width: 90%;
-}
-.headerUI > label{
-    width: 25%;
-    font-size: 11px;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    height:  100%;
+    max-width: 70%;
+    align-items: center;
+    gap: 1rem;
 }
 footer{
-    display: flex;
-    justify-content: center
+    display: grid;
+    padding-top: 40%;
+    justify-content: center;
 }
 .error{
     color: red;

@@ -1,6 +1,7 @@
 
 function init() {
 const content = document.getElementById("content");
+const header = document.getElementById("headerDiv");
 
 headerMain = headerConstruct();
 
@@ -22,8 +23,6 @@ Pages.profilePage = document.createElement("div");
 content.append(Pages.profilePage);
 
 currentPage = Pages.logInPage;
-
-
 updateView();
 }
 

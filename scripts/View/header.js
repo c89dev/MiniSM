@@ -1,31 +1,29 @@
+function headerConstruct() {
 
-    function headerConstruct() {
-    const header = document.getElementById("headerDiv");
-    
-    let mainHeader = { ...headerObj };
-    mainHeader.wrapper = document.createElement("div");
-    mainHeader.UI = document.createElement("div");
+    let header = { ...headerObj };
+    header.wrapper = document.createElement("div");
+    header.UI = document.createElement("div");
 
-    mainHeader.title = document.createElement("h1");
-    mainHeader.title.textContent = "StalkBook";
+    header.title = document.createElement("h1");
+    header.title.textContent = "StalkBook";
 
-    mainHeader.myProf = document.createElement("label");
-    mainHeader.myProf.textContent = "";
+    header.myProf = document.createElement("label");
+    header.myProf.textContent = "";
 
-    mainHeader.logOut = document.createElement("button");
-    mainHeader.logOut.textContent = "Log out";
+    header.logOut = document.createElement("button");
+    header.logOut.textContent = "Log out";
 
-    mainHeader.goToProf = document.createElement("button");
-    mainHeader.goToProf.textContent = "My profile";
+    header.goToProf = document.createElement("button");
+    header.goToProf.textContent = "My profile";
 
-    mainHeader.wrapper.append(mainHeader.title, mainHeader.UI);
-    mainHeader.UI.classList.add("headerUI");
-    mainHeader.title.classList.add("stalkBook");
+    header.wrapper.append(header.title, header.UI);
+    header.UI.classList.add("headerUI");
+    header.title.classList.add("cursorpointer");
 
-    mainHeader.title.onclick = () => clickTitle();
-    console.log("Header target:", header, "Wrapper to append:", mainHeader.wrapper);
-    header.append(mainHeader.wrapper);
-    return mainHeader;
+    header.title.onclick = () => clickTitle();
+
+    headerDiv.append(header.wrapper);
+    return header;
 }
 
 function userUIDraw() {

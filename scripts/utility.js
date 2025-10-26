@@ -83,3 +83,8 @@ function verifyPw(input1, input2) {
         return;
     }
 }
+
+function randBetw(number){
+    rand = Math.floor(Math.random()*number);
+    return rand;
+}

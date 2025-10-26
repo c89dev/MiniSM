@@ -13,6 +13,7 @@ function feedPageConstruct() {
 
     feed.createBtn.onclick = () => goToCreate();
 
+    feed.wrapper.classList.add("feed");
     return feed;
 }
 

@@ -150,6 +150,65 @@ function editAbout(userObj) {
     };
 }
 
+function likeArticle(article, interactingUser, btn) {
+    
+        btn.style.transform = 'translateY(-5px)';
+    setTimeout(() => btn.style.transform = '', 100);
+ 
+    if (!interactingUser.favs.includes(article.articleId)) {
+        console.log("liked");
+        article.likes++;
+        article.likeCount.textContent = article.likes;
+        interactingUser.favs.push(article.articleId);
+        if (!article.likeCount.querySelector(".invisible")) {
+            article.likeCount.classList.remove("invisible");
+        }
+        return;
+    }
+    else if (interactingUser.favs.includes(article.articleId)) {
+        console.log("unliked");
+        article.likes--;
+        article.likeCount.textContent = article.likes;
+        const index = interactingUser.favs.findIndex(
+            item => item === article.articleId);
+        if (index !== -1) {
+            interactingUser.favs.splice(index, 1);
+        }
+    }
+    if (article.likes < 1) {
+        article.likeCount.classList.add("invisible");
+    }
+
+   
+}
+
+function archivePost(article) {
+    // push data
+    article.articleId = idGenerator();
+    article.authorId = loggedInUser.id;
+    globalFeed.push(article);
+    loggedInUser.posts.push(article);
+}
+
+function idGenerator() {
+    let numbers = ["0", "1", "2", "3", "4"];
+    let symbols = ["#", "$", "%", "*"];
+    let result = "";
+
+    for (let i = 0; i <= 2; i++) {
+        result += numbers[randBetw(4)] + symbols[randBetw(4)];
+    }
+    for (let i = 0; i <= 2; i++) {
+        result += numbers[randBetw(4)] + symbols[randBetw(4)];
+    }
+    for (let i = 0; i <= 2; i++) {
+        result += numbers[randBetw(4)] + symbols[randBetw(4)];
+    }
+
+    console.log(result);
+    return result;
+}
+
 // function fileUpload(){
 //     const fileInput = document.getElementById("regPfp");
 //     const selectedFile = fileInput.files[0];
