@@ -60,6 +60,7 @@ function profilePageConstruct(userObj, wrapper) {
     profile.settings.classList.add("invisible");
     wrapper.classList.add("userProfile");
     profile.about.classList.add("about");
+    profile.pfp.classList.add("medAvatar");
     updateView();
     return profile;
 }
